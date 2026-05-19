@@ -1,32 +1,53 @@
-# Let It Go
+# RupeeOrbit India (Next.js 15 Finance Affiliate Platform)
 
-A quiet anonymous ritual that asks one question: “What is your biggest mistake?”
+SEO-first, AdSense-friendly, India-focused finance affiliate website scaffold.
 
-The submitted text is validated, stored without identity metadata, and rendered as a temporary visible star. Mistake rows remain permanent in Supabase PostgreSQL while the universe only queries stars whose `visible_until` timestamp is still in the future.
+## Stack
+- Next.js 15 + TypeScript + Tailwind CSS
+- Supabase-ready backend structure
+- Vercel deployment compatible
 
-## Local setup
+## Core modules delivered
+- Homepage with offers, calculators, blog links
+- Comparison-ready routing and legal pages
+- Affiliate redirection endpoint with UTM-ready targets
+- SEO setup: metadata, OpenGraph, robots, sitemap, JSON-LD
+- Calculator engine sample (EMI)
+- Admin API overview starter
+- Newsletter subscription API starter
 
-```bash
-npm install
-cp .env.example .env.local
-npm run dev
+## Database schema (Supabase suggestion)
+Use a migration like below for production:
+
+```sql
+create table affiliate_offers (
+  id uuid primary key default gen_random_uuid(),
+  slug text unique not null,
+  title text not null,
+  network text not null,
+  destination_url text not null,
+  category text not null,
+  rating numeric(2,1),
+  created_at timestamptz default now()
+);
+
+create table affiliate_clicks (
+  id bigserial primary key,
+  offer_slug text not null,
+  utm_source text,
+  utm_medium text,
+  created_at timestamptz default now()
+);
 ```
 
 ## Environment variables
+- `NEXT_PUBLIC_SITE_URL`
+- `SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY`
 
-- `SUPABASE_URL` — Supabase project URL.
-- `SUPABASE_SERVICE_ROLE_KEY` — server-only key used by API routes.
-- `STRIPE_SECRET_KEY` — server-only Stripe key for checkout sessions.
-- `NEXT_PUBLIC_SITE_URL` — canonical site URL for Stripe redirects.
-
-## Database
-
-Apply `supabase/migrations/001_create_mistakes.sql` to create the required table and index.
-
-Only these fields are stored:
-
-- `text`
-- `created_at`
-- `visible_until`
-
-No IP addresses, user agents, device information, accounts, analytics, cookies, or personal identifiers are collected by the application code.
+## Deployment
+1. Push to GitHub.
+2. Import to Vercel.
+3. Set environment variables.
+4. Run Supabase migrations.
+5. Add affiliate destinations and content via admin modules.
